@@ -117,6 +117,22 @@ This ensures reliable recovery without manual reversal of changes.
 
 ---
 
+## 🔮 Future Scope
+
+Custom rollback mechanism to display all available task versions and allow users to select a specific version to restore
+
+File persistence to store users, tasks, and history across sessions
+
+Stronger typing for task data instead of string-based storage
+
+Improved separation of responsibilities to reduce shared state
+
+Enhanced input validation and error handling
+
+These features were intentionally deferred to keep the current version stable and conceptually focused.
+
+---
+
 ## ▶️ Sample Flow
 
 ```text
@@ -131,20 +147,3 @@ Change task status → in_progress
 Snapshot taken
 
 Rollback → previous version restored
-
----
-
-## 🔮 Future Scope
-
-```text
-Custom rollback mechanism to display all available task versions and allow users to select a specific version to restore
-
-File persistence to store users, tasks, and history across sessions
-
-Stronger typing for task data instead of string-based storage
-
-Improved separation of responsibilities to reduce shared state
-
-Enhanced input validation and error handling
-
-These features were intentionally deferred to keep the current version stable and conceptually focused.
