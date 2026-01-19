@@ -1,61 +1,65 @@
-# Versioned Task Management System (C++ OOP Demo)
+# Versioned Workflow & Task Management System (C++ OOP Demo)
 
 ## 📖 Overview
-This project is a **Versioned Task Management System** implemented in **C++** to demonstrate advanced **Object-Oriented Programming (OOP)** and system design concepts.
+This project is a **Versioned Workflow and Task Management System** implemented in **C++** to demonstrate intermediate-to-advanced **Object-Oriented Programming (OOP)** and **STL-based system design** concepts.
 
-The system allows users to create tasks, update task status, and maintain a complete version history of each task using **snapshot-based rollback**.
+The system allows users to:
+- manage tasks under individual user profiles
+- track complete task history using snapshots
+- restore tasks to any previously saved version
 
-Unlike simple undo mechanisms, this project focuses on **state preservation and restoration**.
+Instead of implementing simple undo logic, this project focuses on **snapshot-based state preservation and rollback**, similar to real-world version control systems.
 
 ---
 
 ## 🧠 Concepts Used
 
 - **Namespaces**
-  - `wk` is used to logically group all classes and shared data.
+  - `wl` is used to logically group all workflow-related classes and data.
 
 - **Object-Oriented Programming**
-  - Classes are used to model users and tasks.
-  - Inheritance is used to extend user functionality.
+  - Classes model users and their associated tasks.
+  - Inheritance is used to extend user functionality for task management.
 
 - **Encapsulation**
-  - Task data is stored using structured data types (`snap`).
-  - Internal state is modified only through class methods.
+  - Task data is represented using a structured data type (`snap`).
+  - Internal state is modified only through controlled class methods.
 
 - **STL Containers**
   - `unordered_map` for fast lookup of users and tasks.
   - `vector` for maintaining ordered task history (snapshots).
 
 - **Snapshot-Based Version Control**
-  - Every task modification stores a full snapshot of the task state.
-  - Snapshots allow safe rollback to previous versions.
+  - Every task mutation stores a full snapshot of task state.
+  - Allows rollback to any historical version.
 
 ---
 
 ## 🏗️ System Structure
 
 ### `snap` (Task & Snapshot Structure)
-Represents both:
-- the current state of a task
-- historical versions of the task
+Acts as a blueprint for both:
+- current task state
+- historical versions of a task
 
 **Attributes:**
-- `id`
-- `title`
-- `status`
-- `note`
+- `task_id`
+- `task_name`
+- `task_status`
+- `task_note`
 
 ---
 
 ### `User`
-Handles user-related operations.
+Handles all user-related operations.
 
 **Responsibilities:**
 - Create users
 - Remove users
 - View all users
+- View a specific user
 
-**Shared Data:**
+**Shared Data Managed:**
 - User profile information
 - Task storage
 - Task history
@@ -63,15 +67,16 @@ Handles user-related operations.
 ---
 
 ### `Tasks` (Derived Class)
-Extends `User` to handle all task-related operations.
+Extends `User` and manages all task-related operations.
 
 **Responsibilities:**
 - Create tasks
 - Remove tasks
-- Update task status
-- Take snapshots
-- Roll back tasks to previous versions
-- View tasks
+- Update task title, status, and notes
+- Take task snapshots
+- Restore tasks to any selected historical version
+- View task history
+- View active tasks for a user
 
 ---
 
@@ -81,11 +86,14 @@ Extends `User` to handle all task-related operations.
 - Add user
 - Remove user
 - View all users
+- View a specific user
 
 ### Task Management
 - Add task
 - Remove task
+- Update task title
 - Update task status
+- Update task notes
 - View tasks for a user
 
 ### Version Control
@@ -93,8 +101,8 @@ Extends `User` to handle all task-related operations.
   - task creation
   - task updates
   - task deletion
-- Rollback to the **last saved version**
-- Task history preserved using `vector<snap>`
+- Task history stored using `vector<snap>`
+- Custom rollback: user selects which version to restore
 
 ---
 
@@ -102,48 +110,38 @@ Extends `User` to handle all task-related operations.
 
 Each snapshot stores the **entire task state** at a specific moment in time.
 
-Rollback restores a task by replacing the current state with a previously saved snapshot.  
-This ensures reliable recovery without manual reversal of changes.
+When restoring:
+1. All available versions are displayed with version indices.
+2. The user selects the desired version.
+3. The current task state is replaced with the selected snapshot.
+
+This approach restores **state**, not individual changes, ensuring reliable recovery.
 
 ---
 
 ## 🧪 How the Program Works
 
 1. User creates a profile.
-2. Tasks are added under a specific user.
-3. Any task change automatically creates a snapshot.
-4. Task history is preserved in order.
-5. User can revert a task to the previously saved version.
-
----
-
-## 🔮 Future Scope
-
-1. Custom rollback mechanism to display all available task versions and allow users to select a specific version to restore
-
-2. File persistence to store users, tasks, and history across sessions
-
-3. Stronger typing for task data instead of string-based storage
-
-4. Improved separation of responsibilities to reduce shared state
-
-5. Enhanced input validation and error handling
-
-These features were intentionally deferred to keep the current version stable and conceptually focused.
+2. Tasks are created under a user.
+3. Every task modification automatically creates a snapshot.
+4. Task history is preserved in chronological order.
+5. User can restore a task to any previous version.
 
 ---
 
 ## ▶️ Sample Flow
 
 ```text
-Enter your user id : 1
-Enter task id : 101
-Enter task title : Fix login bug
-Enter task status : todo
-Enter task note : urgent
-Task created successfully
+Enter User ID : 1
+Enter Task ID : 101
+Enter Task Title : Fix login bug
+Enter Task Status : TO-DO
+Enter Task Note : urgent
+Task added successfully...
 
-Change task status → in_progress
-Snapshot taken
+Change task status → IN_PROGRESS
+Saved in memory...
 
-Rollback → previous version restored
+View history
+Select version index → 0
+Version restored...
